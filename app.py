@@ -31,10 +31,10 @@ users = {
 BUCKET_NAME = 'cloudprojtak'
 
 # Replace with your AWS credentials
-aws_access_key_id = 'ASIA2RFGTH4R33CTU6H4'
-aws_secret_access_key = 'voWqj4nEmMasUBOejoRCMRthDx3py0mXsk4mhuk0'
+aws_access_key_id = 'ASIA2RFGTH4RRCQWJJH2'
+aws_secret_access_key = 'HjPnowL4CbHNzgDkE98sBAGhlUoT8PHwvegOehI2'
 aws_region = 'us-east-1'
-aws_session_token = 'FwoGZXIvYXdzEPv//////////wEaDM2tNFlQOjibAaIbsCLAAe3caabk2Lgn/r5aJaaLp6DA3jixhP+jT5Km/sGXklr8CmogclvxZzyIRWiVOAKwRE7bVoxBBpdAN2I5w/xDmz9ASn/XO7j2mUyWu17I0G24MPSwKqdNt9jUhAk0Xq8kn30aPp7rySPlo3uFR1HbyacC6s0P1svlASQ89r3hH3lOegqdxI7Ub4+qjcYVQLzzoVb5Lx5WpHCph4ObJYhklx5UzdjXsGTdKCeOxWkNamFesjyBiIAUW03Shr3ufXoeiSje4JGmBjIt/tk5z97jYXVXy6a+lv/ZK0VaH/xM5r007WuifzosEsovmo2kn2mIJ/qe9Uu/'
+aws_session_token = 'FwoGZXIvYXdzEDAaDH/5M/JwA83ylFl1XiLAAW8YFPcQ27Huf1aJ0V4rJiDicr5J0Tkisss7FDV53Bmpy/4IPBjLWU9swFDA8rF4ARLLoNbaJSKPUOoFEy/JkCxaflo/G4uELM+TMXGSY2lC1uSG5GrMkWj1MNlPCMJ4bkpVlzBkWb8CGAgbtozrV3N7qYiwNrnFXNA4XJBjwp2g3a6etIQ6boYjmux7w2mulRVHhfq/oj2/NOOl9sCL0kRmBGFswqG3NI+GleR7yqP0zjaUwf2QRYlL6aE8hDtsKCjRpZ2mBjItRU96UUAKU5ec0aJ6ShIMAvogr6X0h0+NqXBHw6HDT30easLuCvnthZ1ONeJG'
 
 
 s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id,
