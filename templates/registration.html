@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h1>Registration</h1>
+    <form method="POST" onsubmit="return validateForm()">
+        <div>
+            <label>Username:</label><br><input type="text" name="username" required>
+            <br><br>
+            <label>Email:</label><br><input type="email" name="email" required>
+            <br><br>
+            <label>Password:</label><br><input type="password" name="password" required>
+            <br>
+        </div>
+        <br>
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+        function validateForm() {
+            var username = document.getElementsByName('username')[0].value;
+            var email = document.getElementsByName('email')[0].value;
+            var password = document.getElementsByName('password')[0].value;
+
+            if (!username) {
+                alert("User name should not Empty.");
+                return false; // Prevent form submission
+            }
+            else if (!email) {
+                alert("Email is not valid.");
+                return false;
+            }
+            else if (!password) {
+                alert("Password is not valid.");
+                return false;
+            }
+            else {
+                alert("Registration is successful. Check you mail for new subscription");
+                return true; // Allow form submission
+            }
+        }
+    </script>
+</body>
+</html>
