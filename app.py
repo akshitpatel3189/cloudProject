@@ -9,14 +9,6 @@ def generate_secret_key():
 app = Flask(__name__)
 app.secret_key = generate_secret_key()
 
-# Initialize the Secrets Manager client
-secrets_manager_client = boto3.client('secretsmanager')
-
-# Retrieve the secret value from Secrets Manager
-secret_name = 'apiUrl'
-response = secrets_manager_client.get_secret_value(SecretId=secret_name)
-secret_data = response['SecretString']
-API_GATEWAY_ENDPOINT = secret_data
 
 # Temporary dictionary to store user data
 users = {
@@ -36,6 +28,17 @@ aws_secret_access_key = 'HjPnowL4CbHNzgDkE98sBAGhlUoT8PHwvegOehI2'
 aws_region = 'us-east-1'
 aws_session_token = 'FwoGZXIvYXdzEDAaDH/5M/JwA83ylFl1XiLAAW8YFPcQ27Huf1aJ0V4rJiDicr5J0Tkisss7FDV53Bmpy/4IPBjLWU9swFDA8rF4ARLLoNbaJSKPUOoFEy/JkCxaflo/G4uELM+TMXGSY2lC1uSG5GrMkWj1MNlPCMJ4bkpVlzBkWb8CGAgbtozrV3N7qYiwNrnFXNA4XJBjwp2g3a6etIQ6boYjmux7w2mulRVHhfq/oj2/NOOl9sCL0kRmBGFswqG3NI+GleR7yqP0zjaUwf2QRYlL6aE8hDtsKCjRpZ2mBjItRU96UUAKU5ec0aJ6ShIMAvogr6X0h0+NqXBHw6HDT30easLuCvnthZ1ONeJG'
 
+# Initialize the Secrets Manager client
+secrets_manager_client = boto3.client('secretsmanager',
+                                      aws_access_key_id=aws_access_key_id,
+                                      aws_secret_access_key=aws_secret_access_key,
+                                      aws_session_token=aws_session_token)
+
+# Retrieve the secret value from Secrets Manager
+secret_name = 'apiUrl'
+response = secrets_manager_client.get_secret_value(SecretId=secret_name)
+secret_data = response['SecretString']
+API_GATEWAY_ENDPOINT = secret_data
 
 s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id,
                         aws_secret_access_key=aws_secret_access_key,
