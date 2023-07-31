@@ -32,6 +32,7 @@ aws_session_token = 'FwoGZXIvYXdzEDAaDH/5M/JwA83ylFl1XiLAAW8YFPcQ27Huf1aJ0V4rJiD
 secrets_manager_client = boto3.client('secretsmanager',
                                       aws_access_key_id=aws_access_key_id,
                                       aws_secret_access_key=aws_secret_access_key,
+                                      region_name=aws_region,
                                       aws_session_token=aws_session_token)
 
 # Retrieve the secret value from Secrets Manager
