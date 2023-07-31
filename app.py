@@ -77,7 +77,7 @@ def register():
                     else:
                         return "Error: Unable to create SNS topic and subscribe."
                 except requests.exceptions.RequestException as e:
-                    return f"Error: {e}".format(e)
+                    return f"Error: {e}"
                 
     return render_template('registration.html')
 
