@@ -38,7 +38,7 @@ secrets_manager_client = boto3.client('secretsmanager',
 secret_name = 'apiUrl'
 response = secrets_manager_client.get_secret_value(SecretId=secret_name)
 secret_data = response['SecretString']
-API_GATEWAY_ENDPOINT = secret_data
+API_GATEWAY_ENDPOINT = secret_data + "/create_sns"
 
 s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id,
                         aws_secret_access_key=aws_secret_access_key,
