@@ -23,23 +23,28 @@ users = {
 BUCKET_NAME = 'cloudprojtak'
 
 # Replace with your AWS credentials
-aws_access_key_id = 'ASIA2RFGTH4RRCQWJJH2'
-aws_secret_access_key = 'HjPnowL4CbHNzgDkE98sBAGhlUoT8PHwvegOehI2'
+aws_access_key_id = 'ASIA2RFGTH4R64BEMNHZ'
+aws_secret_access_key = '5aGz9J3kiBCSXmOx4+nLa3MS3EImBQyTu9zrUKRz'
 aws_region = 'us-east-1'
-aws_session_token = 'FwoGZXIvYXdzEDAaDH/5M/JwA83ylFl1XiLAAW8YFPcQ27Huf1aJ0V4rJiDicr5J0Tkisss7FDV53Bmpy/4IPBjLWU9swFDA8rF4ARLLoNbaJSKPUOoFEy/JkCxaflo/G4uELM+TMXGSY2lC1uSG5GrMkWj1MNlPCMJ4bkpVlzBkWb8CGAgbtozrV3N7qYiwNrnFXNA4XJBjwp2g3a6etIQ6boYjmux7w2mulRVHhfq/oj2/NOOl9sCL0kRmBGFswqG3NI+GleR7yqP0zjaUwf2QRYlL6aE8hDtsKCjRpZ2mBjItRU96UUAKU5ec0aJ6ShIMAvogr6X0h0+NqXBHw6HDT30easLuCvnthZ1ONeJG'
+aws_session_token = 'FwoGZXIvYXdzEDwaDFSARDJEJ67EQ281pSLAAYovXIkio/Ar61MgIFqiz0qel2JeR/jZgi3YGr/JumeYFG57Kpeh80qsNLZ8FbJCpyaC8QkWeAcTNbv7MuLCGQKw6gPSdODsb9px9zzxQdID627TE1X0NMRfARMt+Ocsu4OSw3kUM55rXAJTWxiRRGWAGqUlrRnk972itDvfFENnvnKhUGMeAPMWUTVKFAVE625jcW3V/+t8w8RisCk2aK/QKRBwmVTHVFeDeFXmsChW4YHpEbATA/XgeFxrmwck9yjQ/J+mBjItvhx62yrNJgUwNcCCWXANatWxV7oCuyW3/pnZTYMuZiYYNbhWATo5buWRYl1q'
 
 # Initialize the Secrets Manager client
-secrets_manager_client = boto3.client('secretsmanager',
-                                      aws_access_key_id=aws_access_key_id,
-                                      aws_secret_access_key=aws_secret_access_key,
-                                      region_name=aws_region,
-                                      aws_session_token=aws_session_token)
+def get_aws_client(service):
+    return boto3.client(service,
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key,
+        aws_session_token=aws_session_token,
+        region_name=aws_region)
+
 
 # Retrieve the secret value from Secrets Manager
 secret_name = 'apiUrl'
-response = secrets_manager_client.get_secret_value(SecretId=secret_name)
-secret_data = response['SecretString']
-API_GATEWAY_ENDPOINT = secret_data + "/create_sns"
+def get_secret(secret_name):
+    secretsmanager = get_aws_client('secretsmanager')
+    response = secretsmanager.get_secret_value(SecretId=secret_name)
+    return response['SecretString']
+API_GATEWAY_ENDPOINT = get_secret(secret_name) + '/create_sns'
+
 
 s3_client = boto3.client('s3', aws_access_key_id=aws_access_key_id,
                         aws_secret_access_key=aws_secret_access_key,
