@@ -1,0 +1,40 @@
+/* BrowseGamePage.css */
+.browse-game-page {
+  padding: 20px;
+}
+
+.browse-game-page h1 {
+  color: #333;
+}
+
+.browse-game-page a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.browse-game-page a:hover {
+  text-decoration: underline;
+}
+
+/* Add loader styling */
+.loader {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff; /* Highlighted color */
+  margin-top: 20px;
+}
+
+.ReactModal__Overlay {
+  z-index: 9999;
+}
+
+.ReactModal__Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}

@@ -1,0 +1,188 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for EC2, S3, Lambda and API Gateway
+
+Resources:
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-0f9ce67dcf718d332
+      InstanceType: t2.micro
+      KeyName: test
+      SecurityGroups:
+        - launch-wizard-1
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          sudo yum update -y
+          sudo yum -y install python3-pip -y
+          sudo yum install python3-devel -y
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install flask boto3 requests
+          sudo yum -y install git
+          git clone https://github.com/akshitpatel3189/cloudProject.git
+          cd cloudProject
+          python app.py
+      Tags:
+        - Key: Name
+          Value: txtInstance
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DependsOn:
+      - LambdaPermission
+    Properties:
+      BucketName: cloudprojtak
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt TextExtractLambdaFunction.Arn
+
+  LambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref TextExtractLambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub 'arn:aws:s3:::cloudprojtak'
+      SourceAccount: !Ref AWS::AccountId
+
+  CreateSNSLambdaFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: create_sns
+      Runtime: python3.10
+      Handler: index.lambda_handler
+      Role: 'arn:aws:iam::724051377955:role/LabRole'
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+
+          def lambda_handler(event, context):
+              sns_client = boto3.client('sns', region_name='us-east-1')
+              email = json.loads(event['body'])['email']
+              response = sns_client.create_topic(Name='snsText')
+              topic_arn = response['TopicArn']
+              subscription = sns_client.subscribe(
+                  TopicArn=topic_arn,
+                  Protocol='email',
+                  Endpoint=email
+              )
+              return {
+                  'statusCode': 200,
+                  'body': topic_arn
+              }
+
+  TextExtractLambdaFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: text_extract
+      Runtime: python3.10
+      Handler: index.lambda_handler
+      Role: 'arn:aws:iam::724051377955:role/LabRole'
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+
+          topic_name = 'snsText'
+          region = 'us-east-1'
+          aws_account_id = '724051377955'
+
+          def lambda_handler(event, context):
+              s3_bucket = event['Records'][0]['s3']['bucket']['name']
+              s3_key = event['Records'][0]['s3']['object']['key']
+              textract_client = boto3.client('textract')
+              response = textract_client.detect_document_text(
+                  Document={
+                      'S3Object': {
+                          'Bucket': s3_bucket,
+                          'Name': s3_key
+                      }
+                  }
+              )
+              extracted_text = ""
+
+              for item in response['Blocks']:
+                  if item['BlockType'] == 'LINE':
+                      extracted_text += item['Text'] + "\n"
+
+              sns_topic_arn = f'arn:aws:sns:{region}:{aws_account_id}:{topic_name}'
+              sns_client = boto3.client('sns')
+              sns_client.publish(
+                  TopicArn=sns_topic_arn,
+                  Message=extracted_text,
+                  Subject='Text Extracted from Image'
+              )
+
+              return {
+                  'statusCode': 200,
+                  'body': 'Text extraction and notification sent successfully.'
+              }
+
+  MyLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CreateSNSLambdaFunction
+      Action: "lambda:InvokeFunction"
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/POST/create_sns"
+
+  ApiGatewayRestApi:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: txtAPI
+
+  ApiGatewayResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: create_sns
+
+  ApiGatewayMethod:
+    Type: 'AWS::ApiGateway::Method'
+    DependsOn:
+      - MyLambdaPermission
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ResourceId: !Ref ApiGatewayResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateSNSLambdaFunction.Arn}/invocations"
+        IntegrationResponses:
+          - StatusCode: "200"
+            ResponseParameters:
+              "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'"
+              "method.response.header.Access-Control-Allow-Origin": "'*'"
+      MethodResponses:
+        - StatusCode: "200"
+          ResponseParameters:
+            "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+            "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'"
+            "method.response.header.Access-Control-Allow-Origin": "'*'"
+        - StatusCode: "400"
+
+  ApiGatewayDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn: ApiGatewayMethod
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: newDeploy
+
+  Secret:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: apiUrl
+      SecretString: 
+        Fn::Sub:
+          - https://${restApiId}.execute-api.${region}.amazonaws.com/newDeploy
+          - restApiId: 
+              Ref: ApiGatewayRestApi
+            region: 
+              Ref: AWS::Region
