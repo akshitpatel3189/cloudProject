@@ -8,9 +8,10 @@ import uuid
 from botocore.exceptions import ClientError
 
 db = firestore.Client()
-aws_access_key_id = 'AKIAYYMCQ4PPFYQGX2WL'
-aws_secret_access_key = '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'
-region_name = 'us-east-1'
+
+aws_access_key_id = 'Enter Access Key'
+aws_secret_access_key = 'Enter Secreate Access Key'
+aws_region = 'us-east-1'
 
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -106,7 +107,7 @@ def hello_http(request):
             aws_secret_access_key=aws_secret_access_key,
             region_name=region_name
         )
-        table = dynamodb.Table('Score')
+        table = dynamodb.Table('Score') # Score is Dynamodb table name
 
         # Save the data in Amazon DynamoDB
         score_item = {
