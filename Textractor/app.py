@@ -23,10 +23,10 @@ users = {
 BUCKET_NAME = 'cloudprojtak'
 
 # Replace with your AWS credentials
-aws_access_key_id = 'ASIA2RFGTH4R64BEMNHZ'
-aws_secret_access_key = '5aGz9J3kiBCSXmOx4+nLa3MS3EImBQyTu9zrUKRz'
+aws_access_key_id = 'Enter Access Key'
+aws_secret_access_key = 'Enter Secreate Access Key'
 aws_region = 'us-east-1'
-aws_session_token = 'FwoGZXIvYXdzEDwaDFSARDJEJ67EQ281pSLAAYovXIkio/Ar61MgIFqiz0qel2JeR/jZgi3YGr/JumeYFG57Kpeh80qsNLZ8FbJCpyaC8QkWeAcTNbv7MuLCGQKw6gPSdODsb9px9zzxQdID627TE1X0NMRfARMt+Ocsu4OSw3kUM55rXAJTWxiRRGWAGqUlrRnk972itDvfFENnvnKhUGMeAPMWUTVKFAVE625jcW3V/+t8w8RisCk2aK/QKRBwmVTHVFeDeFXmsChW4YHpEbATA/XgeFxrmwck9yjQ/J+mBjItvhx62yrNJgUwNcCCWXANatWxV7oCuyW3/pnZTYMuZiYYNbhWATo5buWRYl1q'
+aws_session_token = 'Enter Session Token' # its a optional. I used AWS acadamy so I have to add it. if you use persional account then it doesn't needed.
 
 # Initialize the Secrets Manager client
 def get_aws_client(service):
