@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  
+  <p>Hi {{ name }}, you are logged in.</p>
+  <p>Here are other users who are online:</p>
+  
+  <div id="dashboardContent">
+    <ul>
+      {% for user in online_users %}
+        <li>{{ user.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+  <form id="logoutForm" action="/logout" method="POST">
+    
+    <input type="submit" value="Logout">
+  </form>
+</body>
+</html>

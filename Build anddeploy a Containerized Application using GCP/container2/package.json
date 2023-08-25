@@ -1,0 +1,13 @@
+{
+    "name": "login-service",
+    "version": "1.0.0",
+    "description": "Login Microservice",
+    "dependencies": {
+      "express": "^4.17.1",
+      "firebase-admin": "^10.0.0"
+    },
+    "scripts": {
+      "start": "node login.js"
+    }
+  }
+  

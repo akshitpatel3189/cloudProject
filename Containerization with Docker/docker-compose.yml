@@ -1,0 +1,23 @@
+services:
+  container1:
+    image: akshit042/a1container1
+    container_name: container1
+    ports:
+      - 6000:6000
+    volumes:
+      - .:/app/data
+    networks:
+      - mynetwork
+
+  container2:
+    image: akshit042/a1container2
+    container_name: container2
+    ports:
+      - 6001:6001
+    volumes:
+      - .:/app/data
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:

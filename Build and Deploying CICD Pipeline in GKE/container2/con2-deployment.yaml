@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: con2-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: con2
+    matchExpressions: []
+  template:
+    metadata:
+      labels:
+        app: con2
+    spec:
+      containers:
+        - name: con2
+          image: us-central1-docker.pkg.dev/a3kubernetes-390219/con2-repo/con2-image:1.0
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: data-volume
+              mountPath: /app/filedata
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: akshit-pvc-dir

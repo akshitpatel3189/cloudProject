@@ -1,0 +1,13 @@
+{
+    "name": "state-extraction-service",
+    "version": "1.0.0",
+    "description": "State Extraction Microservice",
+    "dependencies": {
+      "express": "^4.17.1",
+      "firebase-admin": "^10.0.0"
+    },
+    "scripts": {
+      "start": "node datafatch.js"
+    }
+  }
+  

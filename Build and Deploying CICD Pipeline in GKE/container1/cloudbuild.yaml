@@ -1,0 +1,41 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/a3kubernetes-390219/con1-repo/con1-image:latest'
+      - '.'
+
+  # Tag the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'tag'
+      - 'us-central1-docker.pkg.dev/a3kubernetes-390219/con1-repo/con1-image:latest'
+      - 'us-central1-docker.pkg.dev/a3kubernetes-390219/con1-repo/con1-image:1.0'
+
+  # Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/a3kubernetes-390219/con1-repo/con1-image:1.0'
+
+  # Deploy the application
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'con1-deployment.yaml'
+      - '-f'
+      - 'con1-service.yaml'
+
+
+images:
+  # Specify the image to be deployed
+  - 'us-central1-docker.pkg.dev/a3kubernetes-390219/con1-repo/con1-image:1.0'
+
+options:
+  env:
+    - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=a3-cluster'
