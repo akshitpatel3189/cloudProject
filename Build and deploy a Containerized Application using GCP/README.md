@@ -16,6 +16,9 @@ There are 2 collections in the database.
 
 **“state”** to contain **user state** (online, offline, timestamp, etc.) information.
 <br />
+<br />
+<br />
+
 
 There are 3 containers.
 
