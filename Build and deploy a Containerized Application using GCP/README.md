@@ -27,4 +27,5 @@ Once the docker images are built, you need to push those 3 container images to
 the artifact registry repository or container repository. Once it is done, you need to  
 deploy those in Cloud Run.<br />
 <br />
-## Flow Diagram:
+## Flow Diagram:<br />
+![flow_diagram](https://github.com/akshitpatel3189/cloudProject/assets/65401508/af9d8698-5432-4070-8025-9c696f2f50fa)
