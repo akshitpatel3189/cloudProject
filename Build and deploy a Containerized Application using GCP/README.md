@@ -15,8 +15,6 @@ There are 2 collections in the database.<br />
 **“Reg”** to  contain **registration data** (Name, Password, Email, Location).<br />
 **“state”** to contain **user state** (online, offline, timestamp, etc.) information.<br />
 <br />
-<br />
-<br />
 There are 3 containers.<br />
 <br />
 **Container 1** is responsible for accepting registration details from the frontend and storing it in the backend database.<br />
