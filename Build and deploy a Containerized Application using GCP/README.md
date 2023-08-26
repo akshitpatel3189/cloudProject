@@ -3,7 +3,7 @@
 This docker project gives a basic understanding of how to build and deploy Docker containers using GCP.
 # Technology
 
-**Database:** Google cloud Firestore
+**Database:** Google Cloud Firestore
 **Programming language:** Python
 **IDE:** VS code
 **Cloud services:** Google Cloud Run, Artifact registry/ Container Registry, Firestore
@@ -12,13 +12,14 @@ This docker project gives a basic understanding of how to build and deploy Docke
 
 There are 2 collections in the database.
 
-**“Reg”** to  contain **registration data** (Name, Password, Email, Location)
-**“state”** to contain **user state** (online, offline, timestamp, etc.) information.
+**“Reg”** to  contain **registration data** (Name, Password, Email, Location).
 
+**“state”** to contain **user state** (online, offline, timestamp, etc.) information.
+<br />
 
 There are 3 containers.
 
-**Container 1** is responsible for accepting registration details from the front-end and storing it in the backend database.
+**Container 1** is responsible for accepting registration details from the frontend and storing it in the backend database.
 
 **Container 2** is responsible for validating the Login information (checking with the database values).
 
