@@ -20,15 +20,15 @@ network to provide more complex functionality, a very small microservice archite
 The first container's role is to serve as an orchestrator and gatekeeper, making sure that the input into the system is clean and valid. It must:
    1. Listen on exposed port 6000 for JSON input sent via an HTTP POST to
     "/calculate", e.g. "http://localhost:6000/calculate"
-    2. Validate the input JSON to ensure a file name was provided, if the "file" parameter is null, return the invalid JSON input result.
-    3. Verify that the file exists, if it does not exist return the file not found error message.
-    4. Send the "file" and "product" parameters to container 2 (you don't have to use JSON to do this, do it however you like, but I
+   2. Validate the input JSON to ensure a file name was provided, if the "file" parameter is null, return the invalid JSON input result.
+   3. Verify that the file exists, if it does not exist return the file not found error message.
+   4. Send the "file" and "product" parameters to container 2 (you don't have to use JSON to do this, do it however you like, but I
     recommend JSON) and return the response from container 2.
 
 **Container 2**
 The second container's role is to listen on another port and endpoint that you define within your docker network for requests to calculate MD5 checksums. It must:
    1. Mount the host machine directory '.' to a docker volume
-  	2. Listen on an endpoint/port you define to respond to calculate requests: 		
+   2. Listen on an endpoint/port you define to respond to calculate requests: 		
   	     a. Load the file.
   	     b. Parse the CSV file with a CSV  library.
   	     c. Calculate the sum of all rows matching the given product parameter.
