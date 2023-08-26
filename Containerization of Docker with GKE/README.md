@@ -1,4 +1,4 @@
-# Build and Deploying CICD Pipeline in GKE
+# Containerization of Docker with GKE
 
 This project is almost the same as a Containerization with Docker project but I run this project with the use of Google Kubernetes Engine (GKE).
 
