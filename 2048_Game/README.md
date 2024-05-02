@@ -1,4 +1,3 @@
-
 # 2048 Game
 
 In this project, I created 2048 game which is running in local computer. Then migrate whole game into AWS cloud using various sevices. This project is showcase of how local game or any software migreated on the cloud.
